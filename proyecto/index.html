@@ -20,7 +20,7 @@
 		<script>
 
 			var camera, escena, renderer;
-			var obj1, obj2, obj3, Baul ,cube6,tapa;
+			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
 			var angulo=0;
 			var controls;
 			init();
@@ -69,8 +69,12 @@
 				escena.add( obj3 );
 
 
-				//var materialbaul = THREE.ImageUtils.loadTexture('img/baul.png');
-				//var material = new THREE.MeshPhongMaterial({ map:materialbaul });
+				var geom = new THREE.BoxGeometry( 800, 0.0, 800 );
+				var PisoTextura = THREE.ImageUtils.loadTexture('img/arena.png');
+				var PisoTextura = new THREE.MeshPhongMaterial({ map:PisoTextura });
+				piso = new THREE.Mesh( geom, PisoTextura );
+				piso.position.set(0.0, -35.0, 0.0);
+
 //cara superior
 				var cs1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } ); //derecha
 				var cs2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );//izq
@@ -132,56 +136,36 @@
 				var materiales6 = new THREE.MeshFaceMaterial( materials6 );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				//atras
-				var geometry1 = new THREE.BoxGeometry( 300, 70, 0 );
+				var geometry1 = new THREE.BoxGeometry( 300, 70, 8);
 				var cube1 = new THREE.Mesh( geometry1, materiales3 );
 				cube1.position.set(0.0, 5.0, -80);
 				//abajo
-				var geometry2 = new THREE.BoxGeometry( 300, 0, 200 );
+				var geometry2 = new THREE.BoxGeometry( 300, 8, 200 );
 				var cube2 = new THREE.Mesh( geometry2, materiales6 );
 				cube2.position.set(0.0, -30.0, 20.0);
 				//izquierda
-				var geometry3 = new THREE.BoxGeometry( 0, 70, 200 );
+				var geometry3 = new THREE.BoxGeometry( 8, 70, 200 );
 				var cube3 = new THREE.Mesh( geometry3, materiales4 );
 				cube3.position.set(-150.0, 5.0, 20.0);
 				//derecha
-				var geometry4 = new THREE.BoxGeometry( 0, 70, 200 );
+				var geometry4 = new THREE.BoxGeometry( 8, 70, 200 );
 				var cube4 = new THREE.Mesh( geometry4, materiales5 );
 				cube4.position.set(150.0, 5.0, 20.0);
 				//delantera
-				var geometry5 = new THREE.BoxGeometry( 300, 70, 0 );
+				var geometry5 = new THREE.BoxGeometry( 300, 70, 8);
 				var cube5 = new THREE.Mesh( geometry5, materiales2 );
 				cube5.position.set(0.0, 5.0, 120.0);
 				 
 				//tapa
 				tapa = new THREE.Object3D();
-				var geometry6 = new THREE.BoxGeometry( 300, 0, 200 );
+				var geometry6 = new THREE.BoxGeometry( 300, 6, 200 );
 				cube6 = new THREE.Mesh( geometry6, materiales1 );
 				cube6.position.set(0.0, 0.0, 100.0);
 				tapa.position.set(0.0, 40.0, -80.0)
 				tapa.add(cube6)
+
+
 				
 			    escena.add( cube1 );
 			    escena.add( cube2 );
@@ -189,6 +173,7 @@
 			    escena.add( cube4 );
 			    escena.add( cube5 );
 			    escena.add( tapa );
+			    escena.add( piso );
 				
 
 
