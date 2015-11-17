@@ -19,8 +19,8 @@
 		<script>
 
 			var camera, escena, renderer;
-			var obj1, obj2, obj3, Baul ,cube6;
-
+			var obj1, obj2, obj3, Baul ,cube6,tapa;
+			var angulo=0;
 			init();
 			animate();
 
@@ -82,18 +82,20 @@
 				var geometry5 = new THREE.BoxGeometry( 300, 70, 0 );
 				var cube5 = new THREE.Mesh( geometry5, material );
 				cube5.position.set(0.0, 5.0, 120.0);
+				tapa = new THREE.Object3D(); 
 				var material = new THREE.MeshBasicMaterial( {color: 0xFFFF99} );
 				var geometry6 = new THREE.BoxGeometry( 300, 0, 200 );
 				cube6 = new THREE.Mesh( geometry6, material );
-				cube6.position.set(0.0, 40.0, 20.0);
+				cube6.position.set(0.0, 0.0, 100.0);
+				tapa.position.set(0.0, 40.0, -80.0)
+				tapa.add(cube6)
 				
-
 			    escena.add( cube1 );
 			    escena.add( cube2 );
 			    escena.add( cube3 );
 			    escena.add( cube4 );
 			    escena.add( cube5 );
-			    //escena.add( cube6 );
+			    escena.add( tapa );
 				
 
 
@@ -129,12 +131,20 @@
 				obj3.rotation.x += 0.005;
 				obj3.rotation.y += 0.01;
 
-				//cube6.rotation.x -=0.005
-				//cube6.rotation.y -=0.005 
+				if( angulo >=0 && angulo <= 180){
+					tapa.rotation.x -=0.005;
+					angulo += 1;
+					if (angulo ==180)
+						angulo=-180;
 
-				//camera.rotation.x +=0.005;
-				//camera.rotation.y += 0.005;
-				//camera.rotation.z += 0.005;
+				};
+
+				if ( angulo <0 && angulo >= -180){
+					tapa.rotation.x +=0.005;
+					angulo += 1;
+					if (angulo ==-1)
+						angulo=0;
+				};
 
 				renderer.render( escena, camera );
 
