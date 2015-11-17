@@ -26,7 +26,7 @@
 
 			function init() {
 
-				camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
 				camera.position.z = 600;
 				camera.position.y = 300;
 				camera.position.x = 120;
@@ -38,10 +38,15 @@
 				var textura = new THREE.MeshBasicMaterial( { color: 0xdddddd } );
 				obj1 = new THREE.Mesh( Cubo, textura );
 				escena.add( obj1 );
-
+				
+				var pointLight = new THREE.PointLight(0xFFFFFF); 
+				pointLight.position.set(100, 100, 250); 
+				escena.add(pointLight);
+				
+				var esferaTextura = THREE.ImageUtils.loadTexture('img/tierra.jpg');
+				var esferaMaterial = new THREE.MeshPhongMaterial({ map:esferaTextura });
 				var esfera = new THREE.SphereGeometry( 20, 70, 70 )
-				var textura = new THREE.MeshBasicMaterial( {  color: 0xdddddd } );
-				obj2 = new THREE.Mesh( esfera, textura );
+				obj2 = new THREE.Mesh( esfera, esferaMaterial );
 				obj2.position.set( -50, 0, 0 );
 				escena.add( obj2 );
 
@@ -81,13 +86,14 @@
 				var geometry6 = new THREE.BoxGeometry( 300, 0, 200 );
 				cube6 = new THREE.Mesh( geometry6, material );
 				cube6.position.set(0.0, 40.0, 20.0);
+				
 
 			    escena.add( cube1 );
 			    escena.add( cube2 );
 			    escena.add( cube3 );
 			    escena.add( cube4 );
 			    escena.add( cube5 );
-			    escena.add( cube6 );
+			    //escena.add( cube6 );
 				
 
 
@@ -95,8 +101,6 @@
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
-
-				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
@@ -125,20 +129,24 @@
 				obj3.rotation.x += 0.005;
 				obj3.rotation.y += 0.01;
 
-				
-
 				//cube6.rotation.x -=0.005
+				//cube6.rotation.y -=0.005 
 
 				//camera.rotation.x +=0.005;
 				//camera.rotation.y += 0.005;
 				//camera.rotation.z += 0.005;
 
-				
-
 				renderer.render( escena, camera );
 
 			}
 			
+			function animateOpenClose (esperiodica){
+				if (esperiodica){
+					
+					
+				}
+				
+			}
 
 		</script>
 
