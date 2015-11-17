@@ -27,8 +27,7 @@
 			animate();
 
 			function init() {
-				
-				
+
 				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
 				camera.position.z = 600;
 				camera.position.y = 300;
@@ -37,57 +36,149 @@
 
 				escena = new THREE.Scene();
 
-				var Cubo = new THREE.BoxGeometry( 30, 30, 30 );
-				var textura = new THREE.MeshBasicMaterial( { color: 0xdddddd } );
-				obj1 = new THREE.Mesh( Cubo, textura );
+				var Cubo = new THREE.BoxGeometry( 50, 50, 50 );
+				var CuboTextura = THREE.ImageUtils.loadTexture('img/crate.gif');
+				var CuboTextura = new THREE.MeshPhongMaterial({ map:CuboTextura });
+				obj1 = new THREE.Mesh( Cubo, CuboTextura );
 				escena.add( obj1 );
 				
-				var pointLight = new THREE.PointLight(0xFFFFFF); 
-				pointLight.position.set(100, 100, 250); 
-				escena.add(pointLight);
+				//var pointLight = new THREE.PointLight(0xFFFFFF); 
+				//pointLight.position.set(100, 100, 250); 
+				//escena.add(pointLight);
+
+				var luzAmbiente = new THREE.AmbientLight(0xFFFFFF);
+				escena.add(luzAmbiente);
+				//var luzDireccional = new THREE.DirectionalLight(0xFFFFFF,1);
+				//luzDireccional.position.set(100,100,100).normalize();
+				//escena.add(luzDireccional);
 				
-				var esferaTextura = THREE.ImageUtils.loadTexture('img/tierra.jpg');
+				var esferaTextura = THREE.ImageUtils.loadTexture('img/land_ocean_ice_cloud_2048.jpg');
 				var esferaMaterial = new THREE.MeshPhongMaterial({ map:esferaTextura });
-				var esfera = new THREE.SphereGeometry( 20, 70, 70 )
+				var esfera = new THREE.SphereGeometry( 30, 70, 70 )
 				obj2 = new THREE.Mesh( esfera, esferaMaterial );
-				obj2.position.set( -50, 0, 0 );
+				obj2.position.set( -80, 0, 0 );
 				escena.add( obj2 );
 
 
-				var piramide = new THREE.CylinderGeometry( 0, 30, 30, 4, 1 );
-				var material = new THREE.MeshBasicMaterial({
-    			color: 0xdddddd,
-    			side:THREE.DoubleSide
-				});
-				obj3 = new THREE.Mesh(piramide, material);
-				obj3.position.set( 50, 0, 0 );
+
+				var piramide = new THREE.CylinderGeometry( 0, 40, 40, 4, 1 );
+				var PirTextura = THREE.ImageUtils.loadTexture('img/pira.png');
+				var PirTextura = new THREE.MeshPhongMaterial({ map:PirTextura });
+				obj3 = new THREE.Mesh(piramide, PirTextura);
+				obj3.position.set( 80, 0, 0 );
 				escena.add( obj3 );
 
 
-				var material = new THREE.MeshBasicMaterial( {color: 0x66CC99} );
+				//var materialbaul = THREE.ImageUtils.loadTexture('img/baul.png');
+				//var material = new THREE.MeshPhongMaterial({ map:materialbaul });
+//cara superior
+				var cs1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } ); //derecha
+				var cs2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );//izq
+				var cs3 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/baul.png') } );//arriba
+				var cs4 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/interiorBaul.png') } );//abajo
+				var cs5 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );//adelante
+				var cs6 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );//atras
+				var materials1 = [cs1, cs2, cs3, cs4, cs5, cs6];
+				var materiales1 = new THREE.MeshFaceMaterial( materials1 );
+
+//cara de adelante
+				var material1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material3 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material4 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material5 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/baul.png') } );
+				var material6 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/interiorBaul.png') } );
+				var materials2 = [material1, material2, material3, material4, material5, material6];
+				var materiales2 = new THREE.MeshFaceMaterial( materials2 );
+
+//cara de atras
+				var material1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material3 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material4 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material5 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/interiorBaul.png') } );
+				var material6 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/baul.png') } );
+				var materials3 = [material1, material2, material3, material4, material5, material6];
+				var materiales3 = new THREE.MeshFaceMaterial( materials3 );
+
+//cara de lado izq
+				var material1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/interiorBaul.png') } );
+				var material2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/baul.png') } );
+				var material3 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material4 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material5 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material6 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var materials4 = [material1, material2, material3, material4, material5, material6];
+				var materiales4 = new THREE.MeshFaceMaterial( materials4 );
+//cara de lado der
+
+				var material1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/baul.png') } );
+				var material2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/interiorBaul.png') } );
+				var material3 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material4 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material5 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material6 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var materials5 = [material1, material2, material3, material4, material5, material6];
+				var materiales5 = new THREE.MeshFaceMaterial( materials5 );
+
+//cara de abajo
+				var material1 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material2 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material3 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/interiorBaul.png') } );
+				var material4 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/baul.png') } );
+				var material5 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var material6 = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/ladosBaul.png') } );
+				var materials6 = [material1, material2, material3, material4, material5, material6];
+				var materiales6 = new THREE.MeshFaceMaterial( materials6 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				//atras
 				var geometry1 = new THREE.BoxGeometry( 300, 70, 0 );
-				var cube1 = new THREE.Mesh( geometry1, material );
+				var cube1 = new THREE.Mesh( geometry1, materiales3 );
 				cube1.position.set(0.0, 5.0, -80);
-				var material = new THREE.MeshBasicMaterial( {color: 0x99CC33} );
+				//abajo
 				var geometry2 = new THREE.BoxGeometry( 300, 0, 200 );
-				var cube2 = new THREE.Mesh( geometry2, material );
+				var cube2 = new THREE.Mesh( geometry2, materiales6 );
 				cube2.position.set(0.0, -30.0, 20.0);
-				var material = new THREE.MeshBasicMaterial( {color: 0xCC9900} );
+				//izquierda
 				var geometry3 = new THREE.BoxGeometry( 0, 70, 200 );
-				var cube3 = new THREE.Mesh( geometry3, material );
+				var cube3 = new THREE.Mesh( geometry3, materiales4 );
 				cube3.position.set(-150.0, 5.0, 20.0);
-				var material = new THREE.MeshBasicMaterial( {color: 0x336666} );
+				//derecha
 				var geometry4 = new THREE.BoxGeometry( 0, 70, 200 );
-				var cube4 = new THREE.Mesh( geometry4, material );
+				var cube4 = new THREE.Mesh( geometry4, materiales5 );
 				cube4.position.set(150.0, 5.0, 20.0);
-				var material = new THREE.MeshBasicMaterial( {color: 0x00FF99} );
+				//delantera
 				var geometry5 = new THREE.BoxGeometry( 300, 70, 0 );
-				var cube5 = new THREE.Mesh( geometry5, material );
+				var cube5 = new THREE.Mesh( geometry5, materiales2 );
 				cube5.position.set(0.0, 5.0, 120.0);
-				tapa = new THREE.Object3D(); 
-				var material = new THREE.MeshBasicMaterial( {color: 0xFFFF99} );
+				 
+				//tapa
+				tapa = new THREE.Object3D();
 				var geometry6 = new THREE.BoxGeometry( 300, 0, 200 );
-				cube6 = new THREE.Mesh( geometry6, material );
+				cube6 = new THREE.Mesh( geometry6, materiales1 );
 				cube6.position.set(0.0, 0.0, 100.0);
 				tapa.position.set(0.0, 40.0, -80.0)
 				tapa.add(cube6)
@@ -124,13 +215,13 @@
 
 				requestAnimationFrame( animate );
 
-				obj1.rotation.x += 0.005;
+				//obj1.rotation.x += 0.005;
 				obj1.rotation.y += 0.01;
 
-				obj2.rotation.x += 0.005;
+				//obj2.rotation.x += 0.005;
 				obj2.rotation.y += 0.01;
 
-				obj3.rotation.x += 0.005;
+				//obj3.rotation.x += 0.005;
 				obj3.rotation.y += 0.01;
 
 				if( angulo >=0 && angulo <= 180){
