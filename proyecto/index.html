@@ -37,10 +37,10 @@
 			function init() {
 				
 				curve = new THREE.CubicBezierCurve3(
-					new THREE.Vector3( 120, 300, 400),
-					new THREE.Vector3( 120, 300, 400 ),
-					new THREE.Vector3( 120, 300, 700 ),
-					new THREE.Vector3( 120, 300, 700)
+					new THREE.Vector3( -100, 0, 600),
+					new THREE.Vector3( 0, 0, 600 ),
+					new THREE.Vector3( 300, 0, 600 ),
+					new THREE.Vector3( 400, 0, 600)
 				);
 				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
 				//camera.position.z = 600;
@@ -182,7 +182,7 @@
 				cube6.position.set(0.0, 0.0, 100.0);
 				tapa.position.set(0.0, 40.0, -80.0)
 				tapa.add(cube6)
-
+				subdivision = curve.getPoints(50);
 
 				
 			    escena.add( cube1 );
@@ -233,10 +233,10 @@
 
 				var time = Date.now() * 0.0005;
 
-				if (camera.position.x >=-400){
+				/*if (camera.position.x >=-400){
 					camera.position.x = Math.sin( time * 0.3 ) * 200;
 
-				}
+				}*/
 				
 				
 				//camera.position.z = Math.sin( time * 0.3 ) * 200;
@@ -257,15 +257,15 @@
 					if (angulo ==-1)
 						angulo=0;
 				};
-				
-				subdivision = curve.getPoints(25);
-				if (j==25)
+				if(j==51)
 					j=-1;
 				j+=1;
+					camera.position.x = subdivision[j].x;
+					camera.position.y = subdivision[j].y;
+					camera.position.z = subdivision[j].z;
+					camera.lookAt(new THREE.Vector3(0,0,0));
+					renderer.render( escena, camera );
 				
-				camera.position.set(subdivision[j]);
-				camera.lookAt(new THREE.Vector3(0,0,0));
-				renderer.render( escena, camera );
 				
 
 			}
