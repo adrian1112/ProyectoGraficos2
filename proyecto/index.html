@@ -7,7 +7,7 @@
 		<style>
 			body {
 				margin: 0px;
-				background-color: #000000;
+				background-color: #FFFFFF;
 				overflow: hidden;
 			}
 		</style>
@@ -208,6 +208,18 @@
 
 				//obj3.rotation.x += 0.005;
 				obj3.rotation.y += 0.01;
+
+				var time = Date.now() * 0.0005;
+
+				if (camera.position.x >=-400){
+					camera.position.x = Math.sin( time * 0.3 ) * 200;
+
+				}
+				
+				
+				//camera.position.z = Math.sin( time * 0.3 ) * 200;
+
+
 
 				if( angulo >=0 && angulo <= 180){
 					tapa.rotation.x -=0.005;
