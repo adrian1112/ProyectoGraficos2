@@ -7,11 +7,7 @@
 		<style>
 			body {
 				margin: 0px;
-<<<<<<< HEAD
 				background-color: #ffffff;
-=======
-				background-color: #FFFFFF;
->>>>>>> origin/master
 				overflow: hidden;
 			}
 		</style>
@@ -22,13 +18,22 @@
 		<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
 
 		<script>
+		/*<<<<<<< HEAD
+				background-color: #ffffff;
+=======
+				background-color: #FFFFFF;
+>>>>>>> origin/master
+				overflow: hidden;
+*/
 
-			var camera, escena, renderer, curve;
+			var camera, escena, renderer, curve,posicionCamera;
 			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
 			var angulo=0;
-			var j=0;
+			var j=0, look=0,orientacion=0;
 			var controls;
 			var subdivision;
+			var TECLA = { uno:false, dos:false, tres:false, cuatro:false, cinco:false, seis:false, siete:false };
+			document.onkeyup = teclaSoltada;
 			init();
 			animate();
 
@@ -36,25 +41,28 @@
 
 
 				curve = new THREE.CubicBezierCurve3(
-					new THREE.Vector3( -100, 0, 600),
-					new THREE.Vector3( 0, 0, 600 ),
-					new THREE.Vector3( 300, 0, 600 ),
-					new THREE.Vector3( 400, 0, 600)
+					new THREE.Vector3( 900, 0, 900),
+					new THREE.Vector3( 450, 0, 600 ),
+					new THREE.Vector3( 0, 0, 500 ),
+					new THREE.Vector3( -450, 0, 300 ),
+					new THREE.Vector3( -900, 0, 100)
+					
+					
+					
 				);
 
 				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 80000 );
-				//camera.position.z = 600;
-				//camera.position.y = 300;
-				//camera.position.x = 120;
+				camera.position.z = 600;
+				camera.position.y = 300;
+				camera.position.x = 120;
+				if(look==0){
+					posicionCamera=camera.getWorldDirection();
+					look=1;
+				};
 
 
 				escena = new THREE.Scene();
 				//escena.fog = new THREE.fog(0xFFFFFF,20000, 10000);
-
-							
-				//var pointLight = new THREE.PointLight(0xFFFFFF); 
-				//pointLight.position.set(100, 100, 250); 
-				//escena.add(pointLight);
 
 				var luzAmbiente = new THREE.AmbientLight(0xFFFFFF);
 				escena.add(luzAmbiente);
@@ -66,26 +74,17 @@
 				luzDireccional.shadowDarkness = 1;
 				
 
-				
-				//light.shadowCameraVisible = true; // only for debugging
-				// these six values define the boundaries of the yellow box seen above
-				
-
-
-
-
-
-
 
 				escena.add(luzDireccional);
 
-				var geom = new THREE.BoxGeometry( 800, 0.0, 800 );
+				var geom = new THREE.PlaneGeometry( 800, 800, 10,10 );
 				var PisoTextura = THREE.ImageUtils.loadTexture('img/arena.png');
 				var PisoTextura = new THREE.MeshPhongMaterial({ map:PisoTextura });
 				piso = new THREE.Mesh( geom, PisoTextura );
 				piso.receiveShadow = true;
 				piso.castShadow = true;
-				piso.position.set(0.0, -35.0, 0.0);
+				piso.position.set(0.0, -30.0, 0.0);
+				piso.rotation.x +=29.85;
 				escena.add( piso );
 
 				var Cubo = new THREE.BoxGeometry( 50, 50, 50 );
@@ -225,7 +224,7 @@
 				tapa.add(cube6)
 
 
-				subdivision = curve.getPoints(50);
+				subdivision = curve.getPoints(100);
 
 
 				
@@ -238,12 +237,7 @@
 			    
 				
 
-
-			   
-
-
-
-				renderer = new THREE.WebGLRenderer();  //{antialias: true}
+				renderer = new THREE.WebGLRenderer({antialias: true});  //{antialias: true}
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.shadowMapEnabled = true;
@@ -272,49 +266,118 @@
 
 				//obj1.rotation.x += 0.005;
 				obj1.rotation.y += 0.01;
-
 				//obj2.rotation.x += 0.005;
 				obj2.rotation.y += 0.01;
-
 				//obj3.rotation.x += 0.005;
 				obj3.rotation.y += 0.01;
 
-				var time = Date.now() * 0.0005;
-
-				//if (camera.position.x >=-400){
-				//	camera.position.x = Math.sin( time * 0.3 ) * 200;
-
-				//}
-				
-				
-				//camera.position.z = Math.sin( time * 0.3 ) * 200;
 
 
-
-				if( angulo >=0 && angulo <= 180){
+				if (TECLA.uno) {
+					if( angulo >=0 && angulo <= 180){
 					tapa.rotation.x -=0.005;
 					angulo += 1;
 					if (angulo ==180)
 						angulo=-180;
+					};
+					if ( angulo <0 && angulo >= -180){
+						tapa.rotation.x +=0.005;
+						angulo += 1;
+						if (angulo ==-1)
+							angulo=0;
+					};
 
 				};
 
-				if ( angulo <0 && angulo >= -180){
-					tapa.rotation.x +=0.005;
-					angulo += 1;
-					if (angulo ==-1)
-						angulo=0;
-				};
-				if(j==51)
-					j=-1;
-				j+=1;
+				if(TECLA.dos){
+
+					if( orientacion==0 && j >=0 && angulo <= 100){
 					camera.position.x = subdivision[j].x;
 					camera.position.y = subdivision[j].y;
 					camera.position.z = subdivision[j].z;
 					camera.lookAt(new THREE.Vector3(0,0,0));
-					renderer.render( escena, camera );
-				
+					j-=1;
+					if(j<0){
+						orientacion=1;
+						j=0;
+						}
+					};
+					if ( orientacion==1 && j >=0 && j<=100){
+						camera.position.x = subdivision[j].x;
+						camera.position.y = subdivision[j].y;
+						camera.position.z = subdivision[j].z;
+						camera.lookAt(new THREE.Vector3(0,0,0));
+						j+=1;
+						if(j==100){
+							orientacion=0;
+						}
+					};
+											
+				}else{
+					camera.lookAt(posicionCamera);
+				}
 
+				
+				
+				renderer.render( escena, camera );
+
+			}
+
+
+			function teclaSoltada(e)
+			{
+			    switch (e.keyCode)
+			    {
+			        case 49: // 1
+			        	if (TECLA.uno == false){
+			        		TECLA.uno=true;
+			        	}else{
+			        		TECLA.uno=false;
+			        	}
+			            break;
+			        case 50: // 2
+			            if (TECLA.dos == false){
+			        		TECLA.dos=true;
+			        	}else{
+			        		TECLA.dos=false;
+			        	}
+			            break;
+			        case 51: // 3
+			            if (TECLA.tres == false){
+			        		TECLA.tres=true;
+			        	}else{
+			        		TECLA.tres=false;
+			        	}
+			            break;
+			        case 52: // 4
+			            if (TECLA.cuatro == false){
+			        		TECLA.cuatro=true;
+			        	}else{
+			        		TECLA.cuatro=false;
+			        	}
+			            break;
+			        case 53: // 5
+			            if (TECLA.cinco == false){
+			        		TECLA.cinco=true;
+			        	}else{
+			        		TECLA.cinco=false;
+			        	}
+			            break;
+			        case 54: // 6
+			            if (TECLA.seis == false){
+			        		TECLA.seis=true;
+			        	}else{
+			        		TECLA.seis=false;
+			        	}
+			            break;
+			        case 55: // 7
+			            if (TECLA.siete == false){
+			        		TECLA.siete=true;
+			        	}else{
+			        		TECLA.siete=false;
+			        	}
+			            break;
+			    }
 			}
 			
 			function animateOpenClose (esperiodica){
