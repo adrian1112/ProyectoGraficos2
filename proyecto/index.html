@@ -7,7 +7,7 @@
 		<style>
 			body {
 				margin: 0px;
-				background-color: #000000;
+				background-color: #ffffff;
 				overflow: hidden;
 			}
 		</style>
@@ -19,19 +19,26 @@
 
 		<script>
 
-			var camera, escena, renderer;
+			var camera, escena, renderer, curve;
 			var obj1, obj2, obj3, Baul ,cube6,tapa;
 			var angulo=0;
 			var controls;
+			var subdivision;
 			init();
 			animate();
 
 			function init() {
-
+				
+				curve = new THREE.CubicBezierCurve3(
+					new THREE.Vector3( 120, 300, 400),
+					new THREE.Vector3( 120, 300, 400 ),
+					new THREE.Vector3( 120, 300, 700 ),
+					new THREE.Vector3( 120, 300, 700)
+				);
 				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
-				camera.position.z = 600;
-				camera.position.y = 300;
-				camera.position.x = 120;
+				//camera.position.z = 600;
+				//camera.position.y = 300;
+				//camera.position.x = 120;
 
 
 				escena = new THREE.Scene();
@@ -40,6 +47,7 @@
 				var CuboTextura = THREE.ImageUtils.loadTexture('img/crate.gif');
 				var CuboTextura = new THREE.MeshPhongMaterial({ map:CuboTextura });
 				obj1 = new THREE.Mesh( Cubo, CuboTextura );
+				obj1.castShadow=true;
 				escena.add( obj1 );
 				
 				//var pointLight = new THREE.PointLight(0xFFFFFF); 
@@ -49,7 +57,7 @@
 				var luzAmbiente = new THREE.AmbientLight(0xFFFFFF);
 				escena.add(luzAmbiente);
 				//var luzDireccional = new THREE.DirectionalLight(0xFFFFFF,1);
-				//luzDireccional.position.set(100,100,100).normalize();
+				//luzDireccional.position.set(100,100,100);
 				//escena.add(luzDireccional);
 				
 				var esferaTextura = THREE.ImageUtils.loadTexture('img/land_ocean_ice_cloud_2048.jpg');
@@ -57,6 +65,7 @@
 				var esfera = new THREE.SphereGeometry( 30, 70, 70 )
 				obj2 = new THREE.Mesh( esfera, esferaMaterial );
 				obj2.position.set( -80, 0, 0 );
+				obj2.castShadow=true;
 				escena.add( obj2 );
 
 
@@ -66,6 +75,7 @@
 				var PirTextura = new THREE.MeshPhongMaterial({ map:PirTextura });
 				obj3 = new THREE.Mesh(piramide, PirTextura);
 				obj3.position.set( 80, 0, 0 );
+				obj3.castShadow=true;
 				escena.add( obj3 );
 
 
@@ -161,6 +171,7 @@
 				//abajo
 				var geometry2 = new THREE.BoxGeometry( 300, 0, 200 );
 				var cube2 = new THREE.Mesh( geometry2, materiales6 );
+				//cube2.receiveShadow();
 				cube2.position.set(0.0, -30.0, 20.0);
 				//izquierda
 				var geometry3 = new THREE.BoxGeometry( 0, 70, 200 );
@@ -194,8 +205,11 @@
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				//renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize( 800, 600 );
 				document.body.appendChild( renderer.domElement );
+				renderer.shadowMapEnabled=true;
+				
 				controls = new THREE.OrbitControls(camera,renderer.domElement);
 				window.addEventListener( 'resize', onWindowResize, false );
 
@@ -205,6 +219,7 @@
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
+				
 
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -238,8 +253,14 @@
 					if (angulo ==-1)
 						angulo=0;
 				};
-
-				renderer.render( escena, camera );
+				
+				subdivision = curve.getPoints(25);
+				for (j = 0; j < 25; j++) {
+					camera.position.set(subdivision[j]);
+					camera.lookAt(new THREE.Vector3(0,0,0));
+					renderer.render( escena, camera );
+				}
+				
 
 			}
 			
