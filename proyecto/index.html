@@ -26,12 +26,12 @@
 				overflow: hidden;
 */
 
-			var camera, escena, renderer, curve,posicionCamera;
+			var camera, escena, renderer, curve,curve1,curve2,curve3,curve4,curve5,curve6,curve7,posicionCamera;
 			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
 			var angulo=0;
-			var j=0, look=0,orientacion=0;
+			var j=1, look=0,orientacion=0,orientacion2=0,orientacion3=0, i=1, k=1,orientacion4=0,l=1;
 			var controls;
-			var subdivision;
+			var subdivision,subdivision2,subdivision3,subdivision4,subdivision5,subdivision6,subdivision7,subdivision8,subdivision9;
 			var TECLA = { uno:false, dos:false, tres:false, cuatro:false, cinco:false, seis:false, siete:false };
 			document.onkeyup = teclaSoltada;
 			init();
@@ -39,17 +39,78 @@
 
 			function init() {
 
+//-----------------------------------
+				curve = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 1000, 0, 2000),
+					new THREE.Vector3( 600, 0, 1000 ),
+					new THREE.Vector3( 0, 0, 500 )
+				);
+				subdivision = curve.getPoints(100);
+				var curve8 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 0, 0, 500),
+					new THREE.Vector3( -600, 0, 1000 ),
+					new THREE.Vector3( -1000, 0, 200)
+				);
+				var sub = curve8.getPoints(100);
+				subdivision=subdivision.concat(sub);
+				subdivision2 = subdivision;
 
-				curve = new THREE.CubicBezierCurve3(
-					new THREE.Vector3( 900, 0, 900),
-					new THREE.Vector3( 450, 0, 600 ),
-					new THREE.Vector3( 0, 0, 500 ),
-					new THREE.Vector3( -450, 0, 300 ),
-					new THREE.Vector3( -900, 0, 100)
-					
-					
+
+//-------------------------------------------------------
+
+
+				curve2 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 2000, 0, 800),
+					new THREE.Vector3( 1700, 0, 600 ),
+					new THREE.Vector3( 1400, 0, 800 )
 					
 				);
+				subdivision3 = curve2.getPoints(200);
+
+				curve3 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 1400, 0, 800 ),
+					new THREE.Vector3( 1000, 0, 600 ),
+					new THREE.Vector3( 700, 0, 600 )
+					
+				);
+				subdivision4 = curve3.getPoints(200);
+				
+				curve4 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 700, 0, 600 ),
+					new THREE.Vector3( 400, 0, 800 ),
+					new THREE.Vector3( 0, 0, 600 )
+					
+				);
+				subdivision5 = curve4.getPoints(200);
+
+				curve5 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 0, 0, 600 ),
+					new THREE.Vector3( -400, 0, 800 ),
+					new THREE.Vector3( -700, 0, 600 )
+					
+				);
+				subdivision6 = curve5.getPoints(200);
+
+				curve6 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( -700, 0, 600 ),
+					new THREE.Vector3( -1000, 0, 800 ),
+					new THREE.Vector3( -1400, 0, 600 )
+					
+				);
+				subdivision7 = curve6.getPoints(200);
+
+				curve7 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( -1400, 0, 600 ),
+					new THREE.Vector3( -1700, 0, 800 ),
+					new THREE.Vector3( -2000, 0, 600 )
+					
+				);
+				subdivision8 = curve7.getPoints(200);
+
+				subdivision3=subdivision3.concat(subdivision4,subdivision5,subdivision6,subdivision7,subdivision8);
+				subdivision9=subdivision3;
+
+//-------------------------------
 
 				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 80000 );
 				camera.position.z = 600;
@@ -62,17 +123,17 @@
 
 
 				escena = new THREE.Scene();
-				//escena.fog = new THREE.fog(0xFFFFFF,20000, 10000);
-
+				
 				var luzAmbiente = new THREE.AmbientLight(0xFFFFFF);
-				escena.add(luzAmbiente);
+				//escena.add(luzAmbiente);
 				var luzDireccional = new THREE.DirectionalLight();
 				luzDireccional.position.set(500,500,500);
 				luzDireccional.intensity = 1.8;
 				luzDireccional.shadowCameraVisible = true;
 				luzDireccional.castShadow = true;
 				luzDireccional.shadowDarkness = 1;
-				
+
+							
 
 
 				escena.add(luzDireccional);
@@ -224,8 +285,7 @@
 				tapa.add(cube6)
 
 
-				subdivision = curve.getPoints(100);
-
+				
 
 				
 			    escena.add( cube1 );
@@ -291,35 +351,128 @@
 
 				if(TECLA.dos){
 
-					if( orientacion==0 && j >=0 && angulo <= 100){
+					if( orientacion==0 && j >0 && j <= 200){
 					camera.position.x = subdivision[j].x;
 					camera.position.y = subdivision[j].y;
 					camera.position.z = subdivision[j].z;
 					camera.lookAt(new THREE.Vector3(0,0,0));
 					j-=1;
-					if(j<0){
+					if(j<=0){
 						orientacion=1;
-						j=0;
+						j=1;
 						}
 					};
-					if ( orientacion==1 && j >=0 && j<=100){
+					if ( orientacion==1 && j >0 && j<=200){
 						camera.position.x = subdivision[j].x;
 						camera.position.y = subdivision[j].y;
 						camera.position.z = subdivision[j].z;
 						camera.lookAt(new THREE.Vector3(0,0,0));
 						j+=1;
-						if(j==100){
+						if(j==200){
 							orientacion=0;
 						}
 					};
+					renderer.render( escena, camera );
 											
 				}else{
-					camera.lookAt(posicionCamera);
+					//camera.lookAt(posicionCamera);
+					j=1;
+					//renderer.render( escena, camera );
 				}
 
+				if(TECLA.tres){
+
+					if( orientacion2==0 && k >0 && k <= 200){
+					camera.position.x = subdivision2[k].x;
+					camera.position.y = subdivision2[k].y;
+					camera.position.z = subdivision2[k].z;
+					camera.lookAt(new THREE.Vector3( subdivision2[k].x, 0 , 0));
+					k-=1;
+					if(k<=0){
+						orientacion2=1;
+						k=1;
+						}
+					};
+					if ( orientacion2==1 && k >0 && k<=200){
+						camera.position.x = subdivision2[k].x;
+						camera.position.y = subdivision2[k].y;
+						camera.position.z = subdivision2[k].z;
+						camera.lookAt(new THREE.Vector3( subdivision2[k].x , 0 , 0));
+						k+=1;
+						if(k==200){
+							orientacion2=0;
+						}
+					};
+					renderer.render( escena, camera );
+				}else{
+					//camera.lookAt(posicionCamera);
+					k=1;
+					//renderer.render( escena, camera );
+				}
+
+				if(TECLA.cuatro){
+
+					if( orientacion4==0 && l >0 && l <= 1200){
+						camera.position.x = subdivision9[l].x;
+						camera.position.y = subdivision9[l].y;
+						camera.position.z = subdivision9[l].z;
+						camera.lookAt(new THREE.Vector3(0 , 0 , 0 ));
+						l+=1;
+						if(l>=1200){
+							orientacion4=1;
+							}
+					};
+					if ( orientacion4==1 && l >0 && l<=1200){
+						camera.position.x = subdivision9[l].x;
+						camera.position.y = subdivision9[l].y;
+						camera.position.z = subdivision9[l].z;
+						camera.lookAt(new THREE.Vector3(0, 0 , 0));
+						l-=1;
+						if(l==1){
+							orientacion4=0;
+							l=1;
+						}
+					};
+					renderer.render( escena, camera );
+											
+				}else{
+					//camera.lookAt(posicionCamera);
+					l=1;
+					//renderer.render( escena, camera );
+				}
+				
+				if(TECLA.cinco){
+
+					if( orientacion3==0 && i >0 && i <= 1200){
+						camera.position.x = subdivision3[i].x;
+						camera.position.y = subdivision3[i].y;
+						camera.position.z = subdivision3[i].z;
+						camera.lookAt(new THREE.Vector3(subdivision3[i].x , 0 , 0 ));
+						i+=1;
+						if(i>=1200){
+							orientacion3=1;
+							}
+					};
+					if ( orientacion3==1 && i >0 && i<=1200){
+						camera.position.x = subdivision3[i].x;
+						camera.position.y = subdivision3[i].y;
+						camera.position.z = subdivision3[i].z;
+						camera.lookAt(new THREE.Vector3(subdivision3[i].x , 0 , 0));
+						i-=1;
+						if(i==1){
+							orientacion3=0;
+							i=1;
+						}
+					};
+					renderer.render( escena, camera );
+											
+				}else{
+					//camera.lookAt(posicionCamera);
+					i=1;
+					renderer.render( escena, camera );
+				}
 				
 				
-				renderer.render( escena, camera );
 
 			}
 
