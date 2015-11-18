@@ -23,14 +23,12 @@
 
 		<script>
 
-<<<<<<< HEAD
 			var camera, escena, renderer, curve;
 			var obj1, obj2, obj3, Baul ,cube6,tapa;
-=======
 			var camera, escena, renderer;
 			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
->>>>>>> origin/master
 			var angulo=0;
+			var j=0;
 			var controls;
 			var subdivision;
 			init();
@@ -261,11 +259,13 @@
 				};
 				
 				subdivision = curve.getPoints(25);
-				for (j = 0; j < 25; j++) {
-					camera.position.set(subdivision[j]);
-					camera.lookAt(new THREE.Vector3(0,0,0));
-					renderer.render( escena, camera );
-				}
+				if (j==25)
+					j=-1;
+				j+=1;
+				
+				camera.position.set(subdivision[j]);
+				camera.lookAt(new THREE.Vector3(0,0,0));
+				renderer.render( escena, camera );
 				
 
 			}
