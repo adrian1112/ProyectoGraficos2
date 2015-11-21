@@ -16,6 +16,7 @@
 
 		<script src="js/three.min.js"></script>
 		<script src="js/threex.domevent.js"> </script>
+		
 		<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
 
 		<script>
@@ -28,6 +29,7 @@
 */
 
 			var camera, escena, renderer, curve,curve1,curve2,curve3,curve4,curve5,curve6,curve7,posicionCamera;
+			var arriba =0, abajo=0, id_tapa;
 			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
 			var angulo=0;
 			var j=1, look=0,orientacion=0,orientacion2=0,orientacion3=0, i=1, k=1,orientacion4=0,l=1;
@@ -35,7 +37,7 @@
 			var subdivision,subdivision2,subdivision3,subdivision4,subdivision5,subdivision6,subdivision7,subdivision8,subdivision9;
 			var TECLA = { uno:false, dos:false, tres:false, cuatro:false, cinco:false, seis:false, siete:false };
 			document.onkeyup = teclaSoltada;
-			//document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+			
 			init();
 			animate();
 
@@ -280,15 +282,17 @@
 
 				//tapa
 				tapa = new THREE.Object3D();
+				console.log(tapa.visible);
 				var geometry6 = new THREE.BoxGeometry( 300, 6, 200 );
 				cube6 = new THREE.Mesh( geometry6, materiales1 );
 				cube6.position.set(0.0, 0.0, 100.0);
 				cube6.castShadow = true;
 				cube6.receiveShadow = true;
+				
 				//Poniendo Evento de click a tapa
-				cube6.on('click', function(){
+				/*tapa.on('click', function(){
 					cube6.scale.x *=2;
-				});
+				});*/
 				
 				tapa.position.set(0.0, 40.0, -80.0)
 				tapa.add(cube6)
@@ -299,7 +303,7 @@
 			    escena.add( cube4 );
 			    escena.add( cube5 );
 			    escena.add( tapa );
-			    
+			    id_tapa = cube6.id;
 				
 
 				renderer = new THREE.WebGLRenderer({antialias: true});  //{antialias: true}
@@ -329,7 +333,7 @@
 			function animate() {
 
 				requestAnimationFrame( animate );
-
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				//obj1.rotation.x += 0.005;
 				obj1.rotation.y += 0.01;
 				//obj2.rotation.x += 0.005;
@@ -343,14 +347,18 @@
 					if( angulo >=0 && angulo <= 180){
 					tapa.rotation.x -=0.005;
 					angulo += 1;
-					if (angulo ==180)
+					arriba=0;
+					if (angulo ==180){
 						angulo=-180;
+						}
 					};
 					if ( angulo <0 && angulo >= -180){
 						tapa.rotation.x +=0.005;
 						angulo += 1;
-						if (angulo ==-1)
+						arriba=1;
+						if (angulo ==-1){
 							angulo=0;
+							}
 					};
 
 				};
@@ -535,32 +543,75 @@
 			            break;
 			    }
 			}
-			
-			
-			//function onDocumentMouseDown( event ) 
-			//{
-				//event.preventDefault();
-			//	var vector = new THREE.Vector3(
-			//	        ( event.clientX / window.innerWidth ) * 2 - 1,
-			//	      - ( event.clientY / window.innerHeight ) * 2 + 1,
-			//	        0.5
-			//	);
-			//	projector.unprojectVector( vector, camera );
-			//	var ray = new THREE.Ray( camera.position,vector.subSelf( camera.position ).normalize());
-			//	var intersects = ray.intersectObjects( objects );
-			//	if ( intersects.length > 0 ) {
+		
+			function onDocumentMouseDown( event ) {
+				var raycaster = new THREE.Raycaster(); // create once
+				var mouse = new THREE.Vector2(); // create once
 
-			//	        intersects[ 0 ].object.materials[ 0 ].color.setHex( Math.random() * 0xffffff );
-
-			//	        var particle = new THREE.Particle( particleMaterial );
-			//	        particle.position = intersects[ 0 ].point;
-			//	        particle.scale.x = particle.scale.y = 8;
-			//	        scene.add( particle );
-
-			//	    }
+				  event.preventDefault();
+				  var mouseVector = new THREE.Vector3();
+				  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				  raycaster.setFromCamera( mouse, camera );
+				  var intersects = raycaster.intersectObject(cube6);
+				  for( var i = 0; i < intersects.length; i++ ) {
+					var intersection = intersects[ i ];
+					var obj = intersection.object;
+					console.log(obj.id);
+					if (obj.id==id_tapa){
+						if (arriba==0){
+						tapa.rotation.x = 0.0
+						angulo=0;
+						while (angulo<=180 && angulo>=0)
+						{
+							tapa.rotation.x -=0.005;
+							angulo += 1;
+							arriba=1;
+							if (angulo ==180)
+							{
+								angulo=-180;
+								}
+						}
+						}
+						else{
+						angulo=-180;
+						tapa.rotation.x = -0.900
+						while ( angulo <0 && angulo >= -180){
+							tapa.rotation.x +=0.005;
+							angulo += 1;
+							arriba=0;
+							if (angulo ==-1)
+								angulo=0;
+						}
+						}
+					}
 					
-				//alert("Dando Clic donde sea")
-			//}
+				  }
+			}
+			/*function onDocumentMouseDown( event ) 
+			{
+				event.preventDefault();
+				var vector = new THREE.Vector3(
+				        ( event.clientX / window.innerWidth ) * 2 - 1,
+				      - ( event.clientY / window.innerHeight ) * 2 + 1,
+				        0.5
+				);
+				projector.unprojectVector( vector, camera );
+				var ray = new THREE.Ray( camera.position,vector.subSelf( camera.position ).normalize());
+				var intersects = ray.intersectObjects( objects );
+				if ( intersects.length > 0 ) {
+
+				        intersects[ 0 ].object.materials[ 0 ].color.setHex( Math.random() * 0xffffff );
+
+				        var particle = new THREE.Particle( particleMaterial );
+				        particle.position = intersects[ 0 ].point;
+				        particle.scale.x = particle.scale.y = 8;
+				        scene.add( particle );
+
+				    }
+					
+				alert("Dando Clic donde sea")
+			}*/
 
 		</script>
 
