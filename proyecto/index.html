@@ -15,6 +15,7 @@
 	<body>
 
 		<script src="js/three.min.js"></script>
+		<script src="js/threex.domevent.js"> </script>
 		<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
 
 		<script>
@@ -34,9 +35,12 @@
 			var subdivision,subdivision2,subdivision3,subdivision4,subdivision5,subdivision6,subdivision7,subdivision8,subdivision9;
 			var TECLA = { uno:false, dos:false, tres:false, cuatro:false, cinco:false, seis:false, siete:false };
 			document.onkeyup = teclaSoltada;
+			//document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 			init();
 			animate();
 
+			
+			
 			function init() {
 
 //-----------------------------------
@@ -281,12 +285,13 @@
 				cube6.position.set(0.0, 0.0, 100.0);
 				cube6.castShadow = true;
 				cube6.receiveShadow = true;
+				//Poniendo Evento de click a tapa
+				cube6.on('click', function(){
+					cube6.scale.x *=2;
+				});
+				
 				tapa.position.set(0.0, 40.0, -80.0)
 				tapa.add(cube6)
-
-
-				
-
 				
 			    escena.add( cube1 );
 			    escena.add( cube2 );
@@ -310,6 +315,7 @@
 
 			}
 
+
 			function onWindowResize() {
 
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -319,7 +325,7 @@
 
 			}
 			
-
+			
 			function animate() {
 
 				requestAnimationFrame( animate );
@@ -471,9 +477,6 @@
 					i=1;
 					renderer.render( escena, camera );
 				}
-				
-				
-
 			}
 
 
@@ -533,13 +536,31 @@
 			    }
 			}
 			
-			function animateOpenClose (esperiodica){
-				if (esperiodica){
+			
+			//function onDocumentMouseDown( event ) 
+			//{
+				//event.preventDefault();
+			//	var vector = new THREE.Vector3(
+			//	        ( event.clientX / window.innerWidth ) * 2 - 1,
+			//	      - ( event.clientY / window.innerHeight ) * 2 + 1,
+			//	        0.5
+			//	);
+			//	projector.unprojectVector( vector, camera );
+			//	var ray = new THREE.Ray( camera.position,vector.subSelf( camera.position ).normalize());
+			//	var intersects = ray.intersectObjects( objects );
+			//	if ( intersects.length > 0 ) {
+
+			//	        intersects[ 0 ].object.materials[ 0 ].color.setHex( Math.random() * 0xffffff );
+
+			//	        var particle = new THREE.Particle( particleMaterial );
+			//	        particle.position = intersects[ 0 ].point;
+			//	        particle.scale.x = particle.scale.y = 8;
+			//	        scene.add( particle );
+
+			//	    }
 					
-					
-				}
-				
-			}
+				//alert("Dando Clic donde sea")
+			//}
 
 		</script>
 
