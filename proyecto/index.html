@@ -23,7 +23,7 @@
 		<script>
 
 
-			var camaraL, tapaP,camera, escena, renderer, curve,curve1,curve2,curve3,curve4,curve5,curve6,curve7,posicionCamera;
+			var camaraL, tapaP,camaraC,camaraX,camaraCS,camaraXS,camaraC,camaraCurva,camera, escena, renderer, curve,curve1,curve2,curve3,curve4,curve5,curve6,curve7,posicionCamera;
 			var arriba =0, id_tapa;
 			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
 			var angulo=0;
@@ -312,15 +312,24 @@
 				gui = new DAT.GUI();
 				parameters =
 				{
-					camara_libre: false,
+					camara_libre: true,
 					tapa_periodica: false,
 					camara_caja: false,
-					camara_X: false
+					camara_X: false,
+					camara_CS: false,
+					camara_XS: false,
+					camara_curva: false
 				};
 				
 				
 				camaraL = gui.add(parameters,'camara_libre').name('Camara Libre').listen();
 				tapaP = gui.add(parameters,'tapa_periodica').name('Tapa Periodica').listen();
+				camaraC = gui.add(parameters,'camara_caja').name('Camara con Foco al centro Forma Tangencial').listen();
+				camaraX = gui.add(parameters,'camara_X').name('Camara con Foco al eje X Forma Tangencial').listen();
+				camaraCS = gui.add(parameters,'camara_CS').name('Camara con Foco al centro Forma Senosoidal').listen();
+				camaraXS = gui.add(parameters,'camara_XS').name('Camara con Foco al eje X Forma Senosoidal').listen();
+				camaraCurva = gui.add(parameters,'camara_curva').name('Camara Perpendicular a la curva').listen();
+
 				gui.open();
 
 			}
@@ -340,22 +349,26 @@
 
 				requestAnimationFrame( animate );
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-				//obj1.rotation.x += 0.005;
 				obj1.rotation.y += 0.01;
-				//obj2.rotation.x += 0.005;
-				obj2.rotation.y += 0.01;
-				//obj3.rotation.x += 0.005;
+				obj2.rotation.y += 0.01;				
 				obj3.rotation.y += 0.01;
 
 				if (parameters.camara_libre==true){
-					parameters.tapa_periodica=false;
 					parameters.camara_caja=false;
 					parameters.camara_X=false;
-					camaraL.updateDisplay() 
-					tapaP.updateDisplay() 
+					parameters.camara_CS=false;
+					parameters.camara_XS=false;
+					parameters.camara_curva=false;
+					actualizarGUI();
 				}				
 
 				if (parameters.tapa_periodica==true) {
+					parameters.camara_caja=false;
+					parameters.camara_X=false;
+					parameters.camara_CS=false;
+					parameters.camara_XS=false;
+					parameters.camara_curva=false;					
+					actualizarGUI();
 					if( angulo >=0 && angulo <= 180){
 					tapa.rotation.x -=0.005;
 					angulo += 1;
@@ -375,8 +388,13 @@
 
 				};
 
-				if(TECLA.dos){
-
+				if(parameters.camara_caja==true){
+					parameters.camara_libre=false;
+					parameters.camara_X=false;
+					parameters.camara_CS=false;
+					parameters.camara_XS=false;
+					parameters.camara_curva=false;	
+					actualizarGUI();
 					if( orientacion==0 && j >0 && j <= 200){
 					camera.position.x = subdivision[j].x;
 					camera.position.y = subdivision[j].y;
@@ -406,8 +424,13 @@
 					//renderer.render( escena, camera );
 				}
 
-				if(TECLA.tres){
-
+				if(parameters.camara_X==true){
+					parameters.camara_libre=false;
+					parameters.camara_caja=false;
+					parameters.camara_CS=false;
+					parameters.camara_XS=false;
+					parameters.camara_curva=false;	
+					actualizarGUI();
 					if( orientacion2==0 && k >0 && k <= 200){
 					camera.position.x = subdivision2[k].x;
 					camera.position.y = subdivision2[k].y;
@@ -436,8 +459,13 @@
 					//renderer.render( escena, camera );
 				}
 
-				if(TECLA.cuatro){
-
+				if(parameters.camara_CS==true){
+					parameters.camara_libre=false;
+					parameters.camara_caja=false;
+					parameters.camara_X=false;
+					parameters.camara_XS=false;
+					parameters.camara_curva=false;	
+					actualizarGUI();
 					if( orientacion4==0 && l >0 && l <= 1200){
 						camera.position.x = subdivision9[l].x;
 						camera.position.y = subdivision9[l].y;
@@ -467,8 +495,12 @@
 					//renderer.render( escena, camera );
 				}
 				
-				if(TECLA.cinco){
-
+				if(parameters.camara_XS==true){
+					parameters.camara_libre=false;
+					parameters.camara_caja=false;
+					parameters.camara_X=false;
+					parameters.camara_CS=false;
+					parameters.camara_curva=false;	
 					if( orientacion3==0 && i >0 && i <= 1200){
 						camera.position.x = subdivision3[i].x;
 						camera.position.y = subdivision3[i].y;
@@ -497,8 +529,24 @@
 					i=1;
 					renderer.render( escena, camera );
 				}
+				if(parameters.camara_curva==true){
+					parameters.camara_libre=false;
+					parameters.camara_caja=false;
+					parameters.camara_X=false;
+					parameters.camara_CS=false;
+					parameters.camara_XS=false;
+					//AQUI VA LO DE PERPENDICULAR A LA CURVA
+				}
 			}
-
+			function actualizarGUI(){
+				camaraL.updateDisplay();
+				tapaP.updateDisplay();
+				camaraC.updateDisplay();
+				camaraX.updateDisplay();
+				camaraCS.updateDisplay();
+				camaraXS.updateDisplay();
+				camaraCurva.updateDisplay();
+			}
 			function teclaSoltada(e)
 			{
 			    switch (e.keyCode)
