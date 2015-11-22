@@ -23,7 +23,7 @@
 		<script>
 
 
-			var Camara_Libre,Tapa_Periodica,camera, escena, renderer, curve,curve1,curve2,curve3,curve4,curve5,curve6,curve7,posicionCamera;
+			var camaraL, tapaP,camera, escena, renderer, curve,curve1,curve2,curve3,curve4,curve5,curve6,curve7,posicionCamera;
 			var arriba =0, id_tapa;
 			var obj1, obj2, obj3, Baul ,cube6,tapa,piso;
 			var angulo=0;
@@ -310,17 +310,17 @@
 				controls = new THREE.OrbitControls(camera,renderer.domElement);
 				window.addEventListener( 'resize', onWindowResize, false );
 				gui = new DAT.GUI();
-				parameters = new FizzyText();
-/*				{
+				parameters =
+				{
 					camara_libre: false,
 					tapa_periodica: false,
 					camara_caja: false,
 					camara_X: false
 				};
-				*/
 				
-				var camaraL = gui.add(parameters,'camara_libre').name('Camara Libre').listen();
-				var tapaP = gui.add(parameters,'tapa_periodica').name('Tapa Periodica').listen();
+				
+				camaraL = gui.add(parameters,'camara_libre').name('Camara Libre').listen();
+				tapaP = gui.add(parameters,'tapa_periodica').name('Tapa Periodica').listen();
 				gui.open();
 
 			}
@@ -351,6 +351,8 @@
 					parameters.tapa_periodica=false;
 					parameters.camara_caja=false;
 					parameters.camara_X=false;
+					camaraL.updateDisplay() 
+					tapaP.updateDisplay() 
 					for (var i in gui.__controllers) {
 						gui.__controllers[i].updateDisplay();
 					}
