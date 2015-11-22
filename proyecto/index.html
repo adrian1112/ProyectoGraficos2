@@ -353,9 +353,6 @@
 					parameters.camara_X=false;
 					camaraL.updateDisplay() 
 					tapaP.updateDisplay() 
-					for (var i in gui.__controllers) {
-						gui.__controllers[i].updateDisplay();
-					}
 				}				
 
 				if (parameters.tapa_periodica==true) {
@@ -502,14 +499,6 @@
 				}
 			}
 
-			function updateDisplay(gui){
-				for (var i in gui.__controllers) {
-					gui.__controllers[i].updateDisplay();
-				}
-				for (var f in gui.__folders) {
-					updateDisplay(gui.__folders[f]);
-				}
-			}
 			function teclaSoltada(e)
 			{
 			    switch (e.keyCode)
@@ -576,8 +565,8 @@
 				  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 				  raycaster.setFromCamera( mouse, camera );
 				  var intersects = raycaster.intersectObject(cube6);
-				  for( var i = 0; i < intersects.length; i++ ) {
-					var intersection = intersects[ i ];
+				  for( var objeto = 0; objeto < intersects.length; objeto++ ) {
+					var intersection = intersects[ objeto ];
 					var obj = intersection.object;
 					console.log(obj.id);
 					if (obj.id==id_tapa){
