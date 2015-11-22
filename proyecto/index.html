@@ -29,9 +29,9 @@
 			var angulo=0;
 			var gui;
 			var parameters;
-			var j=1, look=0,orientacion=0,orientacion2=0,orientacion3=0, i=1, k=1,orientacion4=0,l=1;
+			var j=1, look=0,orientacion=0,orientacion2=0,orientacion3=0,orientacion5=0, i=1, k=1,orientacion4=0,l=1,n=1,m=1;
 			var controls;
-			var subdivision,subdivision2,subdivision3,subdivision4,subdivision5,subdivision6,subdivision7,subdivision8,subdivision9;
+			var subdivision,subdivision2,subdivision3,subdivision4,subdivision5,subdivision6,subdivision7,subdivision8,subdivision9,subdivision10,subdivision11;
 			var TECLA = { uno:false, dos:false, tres:false, cuatro:false, cinco:false, seis:false, siete:false };
 			document.onkeyup = teclaSoltada;
 			
@@ -46,13 +46,13 @@
 //-----------------------------------
 				curve = new THREE.QuadraticBezierCurve3(
 					new THREE.Vector3( 1000, 0, 2000),
-					new THREE.Vector3( 600, 0, 1000 ),
+					new THREE.Vector3( 900, 0, 1000 ),
 					new THREE.Vector3( 0, 0, 500 )
 				);
 				subdivision = curve.getPoints(100);
 				var curve8 = new THREE.QuadraticBezierCurve3(
 					new THREE.Vector3( 0, 0, 500),
-					new THREE.Vector3( -600, 0, 1000 ),
+					new THREE.Vector3( -500, 0, 600 ),
 					new THREE.Vector3( -1000, 0, 200)
 				);
 				var sub = curve8.getPoints(100);
@@ -64,57 +64,90 @@
 
 
 				curve2 = new THREE.QuadraticBezierCurve3(
-					new THREE.Vector3( 2000, 0, 800),
-					new THREE.Vector3( 1700, 0, 600 ),
-					new THREE.Vector3( 1400, 0, 800 )
+					new THREE.Vector3( 2500, 0, 1500),
+					new THREE.Vector3( 2000, 0, 800 ),
+					new THREE.Vector3( 1600, 0, 1500 )
 					
 				);
 				subdivision3 = curve2.getPoints(200);
 
 				curve3 = new THREE.QuadraticBezierCurve3(
-					new THREE.Vector3( 1400, 0, 800 ),
-					new THREE.Vector3( 1000, 0, 600 ),
-					new THREE.Vector3( 700, 0, 600 )
+					new THREE.Vector3( 1600, 0, 1500 ),
+					new THREE.Vector3( 1200, 0, 2200 ),
+					new THREE.Vector3( 800, 0, 1500 )
 					
 				);
 				subdivision4 = curve3.getPoints(200);
 				
 				curve4 = new THREE.QuadraticBezierCurve3(
-					new THREE.Vector3( 700, 0, 600 ),
+					new THREE.Vector3( 800, 0, 1500 ),
 					new THREE.Vector3( 400, 0, 800 ),
-					new THREE.Vector3( 0, 0, 600 )
+					new THREE.Vector3( 0, 0, 1500 )
 					
 				);
 				subdivision5 = curve4.getPoints(200);
 
 				curve5 = new THREE.QuadraticBezierCurve3(
-					new THREE.Vector3( 0, 0, 600 ),
-					new THREE.Vector3( -400, 0, 800 ),
-					new THREE.Vector3( -700, 0, 600 )
+					new THREE.Vector3( 0, 0, 1500 ),
+					new THREE.Vector3( -400, 0, 2200 ),
+					new THREE.Vector3( -800, 0, 1500 )
 					
 				);
 				subdivision6 = curve5.getPoints(200);
 
 				curve6 = new THREE.QuadraticBezierCurve3(
-					new THREE.Vector3( -700, 0, 600 ),
-					new THREE.Vector3( -1000, 0, 800 ),
-					new THREE.Vector3( -1400, 0, 600 )
+					new THREE.Vector3( -800, 0, 1500 ),
+					new THREE.Vector3( -1200, 0, 800 ),
+					new THREE.Vector3( -1600, 0, 1500 )
 					
 				);
 				subdivision7 = curve6.getPoints(200);
 
 				curve7 = new THREE.QuadraticBezierCurve3(
-					new THREE.Vector3( -1400, 0, 600 ),
-					new THREE.Vector3( -1700, 0, 800 ),
-					new THREE.Vector3( -2000, 0, 600 )
+					new THREE.Vector3( -1600, 0, 1500 ),
+					new THREE.Vector3( -2000, 0, 2200 ),
+					new THREE.Vector3( -2500, 0, 1500 )
 					
 				);
 				subdivision8 = curve7.getPoints(200);
 
 				subdivision3=subdivision3.concat(subdivision4,subdivision5,subdivision6,subdivision7,subdivision8);
 				subdivision9=subdivision3;
+				subdivision10=subdivision3;
 
 //-------------------------------
+//-------------------------------------------------------
+
+
+				var c2 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 3000, 0, 1500),
+					new THREE.Vector3( 2000, 0, 400 ),
+					new THREE.Vector3( 1200, 0, 1500 )
+					
+				);
+				var s3 = c2.getPoints(200);
+
+				var c3 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( 1200, 0, 1500 ),
+					new THREE.Vector3( 400, 0, 400 ),
+					new THREE.Vector3( -400, 0, 1500 )
+					
+				);
+				var s4 = c3.getPoints(200);
+				
+				var c4 = new THREE.QuadraticBezierCurve3(
+					new THREE.Vector3( -400, 0, 1500 ),
+					new THREE.Vector3( -1000, 0, 400 ),
+					new THREE.Vector3( -1700, 0, 1500 )
+					
+				);
+				var s5 = c4.getPoints(200);
+
+				subdivision11=s3.concat(s4,s5);
+				
+
+//-------------------------------
+
 
 				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 80000 );
 				camera.position.z = 600;
@@ -527,7 +560,7 @@
 				}else{
 					//camera.lookAt(posicionCamera);
 					i=1;
-					renderer.render( escena, camera );
+					//renderer.render( escena, camera );
 				}
 				if(parameters.camara_curva==true){
 					parameters.camara_libre=false;
@@ -535,7 +568,45 @@
 					parameters.camara_X=false;
 					parameters.camara_CS=false;
 					parameters.camara_XS=false;
-					//AQUI VA LO DE PERPENDICULAR A LA CURVA
+					if( orientacion5==0 && n >0 && n <= 1200){
+						camera.position.x = subdivision10[n].x;
+						camera.position.y = subdivision10[n].y;
+						camera.position.z = subdivision10[n].z;
+						if (subdivision10[n].z >= 1500) {
+							camera.lookAt(new THREE.Vector3(subdivision11[m].x , 0 , 1500));
+						}else{
+							camera.lookAt(new THREE.Vector3(subdivision11[m].x , 0 , subdivision11[m].z));
+							m+=1;
+						}
+						
+						n+=1;
+						if(n>=1200){
+							orientacion5=1;
+							}
+					};
+					if ( orientacion5==1 && n >0 && n<=1200){
+						camera.position.x = subdivision10[n].x;
+						camera.position.y = subdivision10[n].y;
+						camera.position.z = subdivision10[n].z;
+						if (subdivision10[n].z >= 1500) {
+							camera.lookAt(new THREE.Vector3(subdivision11[m].x , 0 , 1500));
+						}else{
+							camera.lookAt(new THREE.Vector3(subdivision11[m].x , 0 , subdivision11[m].z));
+							m-=1;
+						}
+						n-=1;
+						if(n==1){
+							orientacion5=0;
+							n=1;
+							m=1;
+						}
+					};
+					renderer.render( escena, camera );
+				}else{
+					//camera.lookAt(posicionCamera);
+					n=1;
+					m=1;
+					renderer.render( escena, camera );
 				}
 			}
 			function actualizarGUI(){
